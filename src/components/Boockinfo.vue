@@ -1,37 +1,68 @@
 <script>
 export default {
-    data() {
-        return {
-            detailsAreVisible: false,
-            book: {
-                   id: 1,
-                   title: "Narnia",
-                   author: "C.S Lewis",
-                   releaseDate: "1999-12-01"
-          },
-        };
+ // props:["id", "title", "author", "releaseDate", "isLiked"],
+ 
+ //Objetos que validen los props
+  props: {
+    id: {
+      type:String,
+      requerid:true,
     },
-    methods: {
-        toggleDetails() {
-           this.detailsAreVisible = !this.
-           detailsAreVisible;
-        },
+    title:{
+      type:String,
+      requerid:true,
     },
+    author:{
+      type:String,
+      requerid:true,
+    },
+    releaseDate:{
+      type:String,
+      requerid:true,
+    },
+    isLiked:{
+      type:String,
+      requerid:false,
+      default:"0",
+      validator: function (value) {
+        return value === "1" || value === "0";  
+      },
+    },
+  },
+ data() {
+    return {
+      detailsAreVisible: false,
+      BookIsLiked: this.isLiked,
+    };
+ },
+  methods: {
+    toggleDetails() {
+      this.detailsAreVisible = !this.detailsAreVisible;
+    },
+    toggleFavorite(){
+     if (this.BookIsLiked === "1") {
+         this.BookIsLikedd = "0";
+     }else{
+        this.BookIsLiked = "1";
+     }
+    },
+  },
 };
 </script>
 
 <template>
- <li>
-    <h2>{{ book.title }}</h2>
+  <li>
+    <h2>{{ title }} {{ BookIsLiked === "1"  ? "(Liked)" : "(Not Liked)"}}</h2>
 
     <button type="button" @click="toggleDetails">
-        {{ detailsAreVisible ? "Hide" : "Show" }}
+      {{ detailsAreVisible ? "Hide" : "Show" }}
     </button>
 
+    <button type="button" @click="toggleFavorite">Toggle Favorite</button>
+
     <ul v-if="detailsAreVisible">
-        <li><strong>Author:</strong>{{ book.author }}</li>
-        <li><strong>Release Date:</strong>{{ book.releaseDate }}</li>
-    
+      <li><strong>Author:</strong>{{ author }}</li>
+      <li><strong>Release Date:</strong>{{ releaseDate }}</li>
     </ul>
- </li>
+  </li>
 </template>
